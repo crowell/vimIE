@@ -38,6 +38,14 @@ var pressedHJKL = function(keyPress)
 				window.scrollBy(15,0); //scroll right
 				prevKey = ""; //don't care anymore
 				break;
+			case "H":
+				history.go(-1); //go back in history 1
+				prevKey = "";
+				break;
+			case "L":
+				history.forward(); //go forward in history 1
+				prevKey = "";
+				break;
 		}
     }
     else
@@ -50,7 +58,9 @@ var pressedHJKL = function(keyPress)
 
 //start up the appAPI (thanks crossrider)
 appAPI.ready(function($){
-	
+
+	//start Left/Down/Up/Righ nav
+	//"h" for left
 	appAPI.shortcut.add("h", function() 
 	{
 		pressedHJKL("h");
@@ -62,7 +72,7 @@ appAPI.ready(function($){
 			target: document
 		}
 	);
-	
+	//"j" for down
 	appAPI.shortcut.add("j", function() 
 	{
 		pressedHJKL("j");
@@ -74,7 +84,7 @@ appAPI.ready(function($){
 			target: document
 		}
 	);
-	
+	//"k" for up
 	appAPI.shortcut.add("k", function() 
 	{
 		pressedHJKL("k");
@@ -86,10 +96,36 @@ appAPI.ready(function($){
 			target: document
 		}
 	);
-	
+	//"l" for right
 	appAPI.shortcut.add("l", function() 
 	{
 		pressedHJKL("l");
+	}, 
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}
+	);
+	//end the moving the page
+	//now start with History/Tab switching
+	//Shift + H go back 1 in history
+	appAPI.shortcut.add("Shift+H", function() 
+	{
+		pressedHJKL("H");
+	}, 
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}
+	);
+	//Shift + L to go forward 1 in history
+	appAPI.shortcut.add("Shift+L", function() 
+	{
+		pressedHJKL("L");
 	}, 
 		{
 			type: 'keydown',
