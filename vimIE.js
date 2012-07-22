@@ -54,6 +54,19 @@ var pressedHJKL = function(keyPress)
     }
 };
 
+var closeWindow = function(keyPress)
+{
+	if(state === 0)
+	{
+		switch(keyPress)
+		{
+			case "x"
+				window.close();
+				break;
+		}
+	}
+}
+
 
 
 //start up the appAPI (thanks crossrider)
@@ -134,5 +147,17 @@ appAPI.ready(function($){
 			target: document
 		}
 	);
-   
+	//x closes the current tab
+	appAPI.shortcut.add("x", function() 
+	{
+		closeWindow("x");
+	}, 
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}
+	);
+	
 });
