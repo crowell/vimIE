@@ -6,13 +6,12 @@
  * 
  */
 
- //features in first commit
-//HJKL for nav
 
 //start some state variables here
 var state = 0;      // start on state 0 = 'normal'
                     // state 1 can be 'tooltips'
                     // state 2 can be 'tooltips' in new tab
+					//state 3 can be 'insert' mode
 var prevKey = "";   // the previous key press, for multiple presses
 
 //end state variables
@@ -60,14 +59,61 @@ var closeWindow = function(keyPress)
 	{
 		switch(keyPress)
 		{
-			case "x"
+			case "x":
 				window.close();
+				prevKey = "";
 				break;
 		}
 	}
+	else
+	{
+		prevKey = prevKey.concat(keyPress);
+	}
 }
 
+var goGo = function(keyPress)
+{
+	if(state === 0)
+	{
+		switch(keyPress)
+		{
+			case "G": //big G, go directly to bottom
+				break;
+			case "g": //little g, check for gg
+				break;
+				switch(prevKey)
+				{
+					case "g":
+						//go directly to top
+						break;
+					case ""; //empty string, start capturing next one
+						prevKey = prevKey.concat(keyPress);
+					default:
+						//reset the prevKey
+						prevKey = "";
+						prevKey = prevKey.concat(keyPress);
+				}
+		}
+	}
+	else
+	{
+		prevKey = prevKey.concat(keyPress);
+	}
+}
 
+var resetNormal = function()
+{
+	state = 0; //go back to normal mode;
+	prevKey = ""; //reset all previous keystrokes
+	
+	//@TODO: close out of tips for quick links
+}
+
+var insertMode = function()
+{
+	state = 3; //go to insert mode
+	prevKey = ""; //reset all previous keystrokes
+}
 
 //start up the appAPI (thanks crossrider)
 appAPI.ready(function($){
@@ -159,5 +205,29 @@ appAPI.ready(function($){
 			target: document
 		}
 	);
-	
+	//esc, get out to "normal" mode, reset all vars
+	appAPI.shortcut.add("esc", function()
+	{
+		resetNormal();
+	},
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}	
+	};
+	//i - for insert mode.  We don't really have any plans for "insert"
+	//so just disable all "normal" mode activities.
+	appAPI.shortcut.add("i", function()
+	{
+		insertMode();
+	},
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}	
+	};
 });
