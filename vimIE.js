@@ -11,7 +11,7 @@
 var state = 0;      // start on state 0 = 'normal'
                     // state 1 can be 'tooltips'
                     // state 2 can be 'tooltips' in new tab
-					//state 3 can be 'insert' mode
+		//state 3 can be 'insert' mode
 var prevKey = "";   // the previous key press, for multiple presses
 
 //end state variables
@@ -102,6 +102,23 @@ var goGo = function(keyPress)
 	else
 	{
 		prevKey = prevKey.concat(keyPress);
+	}
+};
+
+var followLinks = function(newTab)
+{
+	if(state === 0)
+	{
+		switch(newTab)
+		{
+			case("f"):
+				//set us to the "same tab" mode
+				state = 1;
+				break;	
+		}
+		//first, we'll grab all of the links
+		var allLinks = documents.links;
+		alert(allLinks.length);
 	}
 };
 
@@ -250,6 +267,17 @@ appAPI.ready(function($){
 	appAPI.shortcut.add("i", function()
 	{
 		insertMode();
+	},
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}	
+	);
+	appAPI.shortcut.add("f", function()
+	{
+		followLinks("f");
 	},
 		{
 			type: 'keydown',
