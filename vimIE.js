@@ -69,7 +69,7 @@ var closeWindow = function(keyPress)
 	{
 		prevKey = prevKey.concat(keyPress);
 	}
-}
+};
 
 var goGo = function(keyPress)
 {
@@ -78,20 +78,22 @@ var goGo = function(keyPress)
 		switch(keyPress)
 		{
 			case "G": //big G, go directly to bottom
+				window.scrollTo(0, document.body.scrollHeight);
 				break;
 			case "g": //little g, check for gg
-				break;
 				switch(prevKey)
 				{
 					case "g":
-						//go directly to top
+						window.scrollTo(0,0); //go directly to the top 
 						break;
-					case ""; //empty string, start capturing next one
+					case "": //empty string, start capturing next one
 						prevKey = prevKey.concat(keyPress);
+						break;
 					default:
 						//reset the prevKey
 						prevKey = "";
 						prevKey = prevKey.concat(keyPress);
+						break;
 				}
 		}
 	}
@@ -99,7 +101,7 @@ var goGo = function(keyPress)
 	{
 		prevKey = prevKey.concat(keyPress);
 	}
-}
+};
 
 var resetNormal = function()
 {
@@ -216,7 +218,7 @@ appAPI.ready(function($){
 			disable_in_input: true,
 			target: document
 		}	
-	};
+	);
 	//i - for insert mode.  We don't really have any plans for "insert"
 	//so just disable all "normal" mode activities.
 	appAPI.shortcut.add("i", function()
@@ -229,5 +231,5 @@ appAPI.ready(function($){
 			disable_in_input: true,
 			target: document
 		}	
-	};
+	);
 });
