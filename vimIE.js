@@ -79,6 +79,8 @@ var goGo = function(keyPress)
 		{
 			case "G": //big G, go directly to bottom
 				window.scrollTo(0, document.body.scrollHeight);
+				//and clear the text out
+				prevKey = "";
 				break;
 			case "g": //little g, check for gg
 				switch(prevKey)
@@ -199,6 +201,30 @@ appAPI.ready(function($){
 	appAPI.shortcut.add("x", function() 
 	{
 		closeWindow("x");
+	}, 
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}
+	);
+	//gogo to the top?
+	appAPI.shortcut.add("g", function() 
+	{
+		goGo("g");
+	}, 
+		{
+			type: 'keydown',
+			propagate: true,
+			disable_in_input: true,
+			target: document
+		}
+	);
+	//gogo to the bottom?
+	appAPI.shortcut.add("Shift+G", function() 
+	{
+		goGo("G");
 	}, 
 		{
 			type: 'keydown',
