@@ -128,16 +128,19 @@ var resetNormal = function()
 	prevKey = ""; //reset all previous keystrokes
 	
 	//@TODO: close out of tips for quick links
-}
+};
 
 var insertMode = function()
 {
 	state = 3; //go to insert mode
 	prevKey = ""; //reset all previous keystrokes
-}
+};
 
 //start up the appAPI (thanks crossrider)
 appAPI.ready(function($){
+
+	//first thing to do. load up "Tipsy"
+	appAPI.resources.includeJS('tipsy/jquery.tipsy.js');
 
 	//start Left/Down/Up/Righ nav
 	//"h" for left
