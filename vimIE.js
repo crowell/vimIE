@@ -31,6 +31,7 @@ var state = 0;      // start on state 0 = 'normal'
 		//state 3 can be 'insert' mode
 var prevKey = "";   // the previous key press, for multiple presses
 
+
 //end state variables
 var pressedHJKL = function(keyPress)
 {
@@ -141,8 +142,8 @@ var followLinks = function(newTab)
 		//first, we'll grab all of the links and assign a new ID
 		//tipsys love IDs
 		//then show the 
-		var num = jQuery('a'.length);
-		var count = 0;
+		var myKeys = "sadfjklewcmpgh"; //same as vimium's defaults
+		var num = jQuery('a').length;
 		var perms = getContent(num);
 		jQuery("a").each(function(ii) 
 		{
@@ -159,63 +160,79 @@ var followLinks = function(newTab)
 	}
 };
 
-var permute = function (list) {
-    var self = {};
+var getOneChar = function()
+{
+	var myKeys = "sadfjklewcmpgh"; //same as vimium's defaults
+	return myKeys.split("");
+}
 
-    // Get start sequence of given array
-    self.getStartSequence = function (list) {
-        return list.slice(0).sort();
-    };
+var getTwoChar = function()
+{
+	var myKeys = "sadfjklewcmpgh"; //same as vimium's defaults
+	var twoChar = new Array();
+	for(var ii = 0; ii < myKeys.length; ii++)
+	{
+		for(var ii = 0; ii < myKeys.length; ii++)
+		{
+			twoChar.push(myKeys[ii]);
+		}
+	}
+	return twoChar;
+}
 
-    // Get next sequence from given array
-    // Ref: http://en.wikipedia.org/wiki/Permutation#Systematic_generation_of_all_permutations
-    self.getNextSequence = function (list) {
-        // Make clone
-        var a = list.slice(0);
-
-        //The following algorithm generates the next permutation lexicographically after a given permutation. It changes the given permutation in-place.
-        //  1. Find the largest index k such that a[k] < a[k + 1]. If no such index exists, the permutation is the last permutation.
-        var k = -1;
-        for (var i = 0; i < a.length - 1; ++i) {
-            if (a[i] < a[i + 1]) { k = i; }
-        }
-        if (k == -1) return null; // means this is the last one
-
-        //  2. Find the largest index l such that a[k] < a[l]. Since k + 1 is such an index, l is well defined and satisfies k < l.
-        var l = -1;
-        for (var i = 0; i < a.length; ++i) {
-            if (a[k] < a[i]) { l = i };
-        }
-        if (l == -1) return null; // impossible
-
-        //  3. Swap a[k] with a[l].
-        var tmp = a[k]; a[k] = a[l]; a[l] = tmp;
-
-        //  4. Reverse the sequence from a[k + 1] up to and including the final element a[n].
-        var next = a.slice(0, k + 1).concat(a.slice(k + 1).reverse());
-
-        return next;
-    };
-
-    return self;
-};
-
+var getThreeChar = function()
+{
+	var myKeys = "sadfjklewcmpgh"; //same as vimium's defaults
+	var threeChar = new Array();
+	for(var ii = 0; ii < myKeys.length; ii++)
+	{
+		for(var jj = 0; jj < myKeys.length; jj++)
+		{
+			for(var kk = 0; kk < myKeys.length; kk++)
+			{
+				threeChar.push(myKeys[ii] + myKeys[jj] + myKeys[kk]);
+			}
+		}
+	}
+	return threeChar;
+}
 
 var getContent = function(total)
 {
-	//total available keys
+	console.log(total + "number of links");
 	var myKeys = "sadfjklewcmpgh"; //same as vimium's defaults
-	var numChars = 1;
-	var permutations = Math.pow(myKeys.length, numChars);
-	while (permutations <= total)
+	if(total <= myKeys.length)
 	{
-		permutations = Math.pow(myKeys.length, ++numChars);
+		return myKeys.split("");
 	}
-	var theChars = myKeys.substring(0, 3); //to an array of chars
-	console.log(theChars);
-	console.log(numChars);
-	var perm = permute(theChars);
-	return perm;
+	if (total <= (myKeys.length*myKeys.length))
+	{
+		var twoChar = new Array();
+		for(var ii = 0; ii < myKeys.length; ii++)
+		{
+			for(var jj = 0; jj < myKeys.length; jj++)
+			{
+				twoChar.push(myKeys[ii] + myKeys[jj]);
+			}
+		}
+		return twoChar;
+	}
+	if (total <= (myKeys.length*myKeys.length*myKeys.length))
+	{
+		var threeChar = newArray();
+		for(var ii = 0; ii < myKeys.length; ii++)
+		{
+			for(var jj = 0; jj < myKeys.length; jj++)
+			{
+				for(var kk = 0; kk < myKeys.length; kk++)
+				{
+					threeChar.push(myKeys[ii] + myKeys[jj] + myKeys[kk]);
+				}
+			}
+		}
+		return threeChar;
+	}
+	return;
 }
 
 var resetNormal = function()
@@ -247,7 +264,6 @@ var insertMode = function()
 appAPI.ready(function($){
 
 	appAPI.resources.includeJS('jquery.tools.min.js');
-
 	//start Left/Down/Up/Righ nav
 	//"h" for left
 	appAPI.shortcut.add("h", function() 
